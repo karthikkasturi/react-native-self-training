@@ -16,7 +16,9 @@ import {
   Alert,
   ScrollView,
   ViewPagerAndroid,
-  SectionList
+  SectionList, 
+  ActivityIndicator,
+  FlatList
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -47,7 +49,7 @@ class Blink extends Component{
       this.setState(previousState => {
         return {isShowingText: !previousState.isShowingText} 
       });
-    },500);
+    },1000);
   }
   
   render(){
@@ -69,6 +71,7 @@ class Translater extends Component{
       this.state      
     );
   }
+  
   render(){
     return(
         <View >
@@ -90,6 +93,50 @@ class Translater extends Component{
   }
 }
 
+class MovieList extends Component{
+
+  constructor(props){
+      super(props);
+      this.state ={ isLoading: true}
+    }
+  
+    componentDidMount(){
+      return fetch('https://facebook.github.io/react-native/movies.json')
+        .then((response) => response.json())
+        .then((responseJson) => {
+  
+          this.setState({
+            isLoading: false,
+            dataSource: responseJson.movies,
+          }, function(){
+  
+          });
+  
+        })
+        .catch((error) =>{
+          console.error(error);
+        });
+    }
+    render(){
+      if(this.state.isLoading){
+        return(
+          <View style={{flex: 1, padding: 20}}>
+            <ActivityIndicator/>
+          </View>
+        )
+      }
+      return(
+        <View style={{flex: 1, paddingTop:20}}>
+          <FlatList
+            data={this.state.dataSource}
+            renderItem={({item}) => <Text>{item.title}, {item.releaseYear}</Text>}
+            keyExtractor={(item, index) => index}
+          />
+        </View>
+      );
+    }
+  }
+
 export default class App extends Component{
   render() {  
     let pic = {
@@ -98,97 +145,97 @@ export default class App extends Component{
     return (
       <ViewPagerAndroid initialPage = {0} style = {styles.container}>
         <View key = "1">
-      <ScrollView pagingEnabled = {true} >
-        <View style={styles.container}>
-         <Translater lang = '🐉' />
-       <Image source={pic} style={{width: 193, height: 110}}></Image> 
-        <Text style={styles.welcome}>
-          Welcome to Karthik's App!
-        </Text>
-        <Text style={styles.instructions}>
-          Currently editing App.js
-        </Text>
-        <Text style={styles.instructions}>
-        </Text>
-        <Description appType = "shit"/>
-        <Description appType = "sleek"/>
+          <ScrollView pagingEnabled = {true} >
+          <View style={styles.container}>
+          <Translater lang = '🐉' />
+          <Image source={pic} style={{width: 193, height: 110}}></Image> 
+          <Text style={styles.welcome}>
+            Welcome to Karthik's App!
+          </Text>
+          <Text style={styles.instructions}>
+            Currently editing App.js
+          </Text>
+          <Text style={styles.instructions}>
+          </Text>
+          <Description appType = "shit"/>
+          <Description appType = "sleek"/>
 
-        <Blink text = "Flashy app :)"/>
-        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-        <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
-        <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
+          <Blink text = "Flashy app :)"/>
+          <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+          <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
+          <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
 
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+          <Text style={styles.instructions}>
+            {instructions}
+          </Text>
+          </View>
+          <View style={styles.container}>
+          <Translater lang = '🐉' />
+          <Image source={pic} style={{width: 193, height: 110}}></Image> 
+          <Text style={styles.welcome}>
+            Welcome to Karthik's App!
+          </Text>
+          <Text style={styles.instructions}>
+            Currently editing App.js
+          </Text>
+          <Text style={styles.instructions}>
+          </Text>
+          <Description appType = "shit"/>
+          <Description appType = "sleek"/>
+          <Blink text = "Flashy app :)"/>
+          <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+          <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
+          <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
+          <Text style={styles.instructions}>
+            {instructions}
+          </Text>
+          </View>
+          <View style={styles.container}>
+          <Translater lang = '🐉' />
+          <Image source={pic} style={{width: 193, height: 110}}></Image> 
+          <Text style={styles.welcome}>
+            Welcome to Karthik's App!
+          </Text>
+          <Text style={styles.instructions}>
+            Currently editing App.js
+          </Text>
+          <Text style={styles.instructions}>
+          </Text>
+          <Description appType = "shit"/>
+          <Description appType = "sleek"/>
+
+          <Blink text = "Flashy app :)"/>
+          <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+          <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
+          <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
+
+          <Text style={styles.instructions}>
+            {instructions}
+          </Text>
+          </View>
+          </ScrollView>
         </View>
-        <View style={styles.container}>
-         <Translater lang = '🐉' />
-       <Image source={pic} style={{width: 193, height: 110}}></Image> 
-        <Text style={styles.welcome}>
-          Welcome to Karthik's App!
-        </Text>
-        <Text style={styles.instructions}>
-          Currently editing App.js
-        </Text>
-        <Text style={styles.instructions}>
-        </Text>
-        <Description appType = "shit"/>
-        <Description appType = "sleek"/>
-
-        <Blink text = "Flashy app :)"/>
-        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-        <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
-        <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
-
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <View key = "2" style = {styles.container}>
+          <Translater lang = '🍕' />
+          {/* <Blink text = "This is another flashy view"/> */}
+          <View style={styles.container}>
+            <SectionList style = {{flex:1, maxHeight: 1400}}
+              sections={[
+                {title: 'D names', data: ['Devin', 'Jacksdasfasfson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+                {title: 'D names', data: ['Devin', 'Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+                {title: 'D names', data: ['Devin', 'Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+                {title: 'D names', data: ['Devin', 'Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+                {title: 'J names', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+              ]}
+              renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+              renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+              keyExtractor={(item, index) => index}
+            />
+          </View>
         </View>
-        <View style={styles.container}>
-         <Translater lang = '🐉' />
-       <Image source={pic} style={{width: 193, height: 110}}></Image> 
-        <Text style={styles.welcome}>
-          Welcome to Karthik's App!
-        </Text>
-        <Text style={styles.instructions}>
-          Currently editing App.js
-        </Text>
-        <Text style={styles.instructions}>
-        </Text>
-        <Description appType = "shit"/>
-        <Description appType = "sleek"/>
-
-        <Blink text = "Flashy app :)"/>
-        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-        <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
-        <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
-
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <View key = "3">
+          <MovieList/>
         </View>
-      </ScrollView>
-      </View>
-      <View key = "2" style = {styles.container}>
-        <Translater lang = '🍕' />
-        {/* <Blink text = "This is another flashy view"/> */}
-        <View style={styles.container}>
-        <SectionList style = {{flex:1, maxHeight: 1400}}
-          sections={[
-            {title: 'D names', data: ['Devin', 'Jacksdasfasfson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-            {title: 'D names', data: ['Devin', 'Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-            {title: 'D names', data: ['Devin', 'Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-            {title: 'D names', data: ['Devin', 'Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-            {title: 'J names', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-          ]}
-          renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
-          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-          keyExtractor={(item, index) => index}
-        />
-        </View>
-        
-      </View>
       </ViewPagerAndroid>
     );
     
